@@ -6,25 +6,17 @@
 
 using namespace std;
 
-void myPermutation(vector<int>& nums,int cur, int lens,int& res, int sum){
-	if(sum==0||cur>=lens){
-		if(sum==0)	res++;
-		return;
-	}
-	for(int i=cur;i<lens;i++){
-		if(sum-nums[i]>=0){
-			myPermutation(nums,i+1,lens,res,sum-nums[i]);
+long long getResult(vector<int>& nums, int sum){
+	int n = nums.size();
+	vector<vector<long long>> dp(n+1,vector<long long>(sum+1,0));
+	for(int i=0;i<=n;i++)	dp[i][0] = 1;
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=sum;j++){
+			if(nums[i-1]<=j)	dp[i][j] = dp[i-1][j] + dp[i-1][j-nums[i-1]];
+			else	dp[i][j] = dp[i-1][j];
 		}
-		else	break;
 	}
-}
-
-int getResult(vector<int>& nums, int sum){
-	sort(nums.begin(),nums.end());
-	int lens = nums.size();
-	int res = 0;
-	myPermutation(nums,0,lens,res,sum);
-	return res;
+	return dp[n][sum];
 }
 
 int main(){
@@ -32,7 +24,7 @@ int main(){
 	cin >> n >> sum;
 	vector<int> nums(n);
 	for(int i=0;i<n;i++)	cin >> nums[i];
-	int ret = getResult(nums,sum);
+	long long ret = getResult(nums,sum);
 	cout << ret << endl;
 	return 0;
 }

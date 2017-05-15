@@ -3,37 +3,41 @@
 #include <map>
 #include <string>
 #include <algorithm>
+#include <bits/stdc++.h>
 
 using namespace std;
 
-void myPermutation(map<int, vector<vector<int>>>& table, vector<bool>& marks, int cur, int dst, int cur_dist, int& result) {
-	if (cur == dst) {
-		if (cur_dist<result)	result = cur_dist;
-		return;
-	}
-	for (int i = 0; i<table[cur].size(); i++) {
-		if (!marks[table[cur][i][0]]) {
-			if(cur_dist + table[cur][i][1]>result)	continue;
-			marks[table[cur][i][0]] = true;
-			myPermutation(table, marks, table[cur][i][0], dst, cur_dist + table[cur][i][1], result);
-			marks[table[cur][i][0]] = false;
-		}
-	}
+int dijkstra(vector<vector<int>>& table, vector<bool>& marks, vector<int>& dist, int n) {
+    while(1){
+      int idx = -1, min_dist = INT_MAX;
+      for(int i=0;i<n;i++){
+        if(marks[i])  continue;
+        if(dist[i]<min_dist){
+          min_dist = dist[i];
+          idx = i;
+        }
+      }
+      if(idx==n-1)  return dist[idx];
+      marks[idx] = true;
+      for(int i=0;i<n;i++){
+        if(marks[i])  continue;
+        if(table[idx][i]<INT_MAX&&dist[idx]+table[idx][i]<dist[i])  dist[i] = dist[idx]+table[idx][i];
+      }
+    }
 }
 
 int main() {
 	int n = 0, m = 0;
 	cin >> n >> m;
-	map<int, vector<vector<int>>> table;
+	vector<vector<int>> table(n,vector<int>(n,INT_MAX));
 	for (int i = 0; i<m; i++) {
 		int a = 0, b = 0, c = 0;
 		cin >> a >> b >> c;
-		table[a - 1].push_back(vector<int>({ b - 1,c }));
-		table[b - 1].push_back(vector<int>({ a - 1,c }));
+    table[a-1][b-1] = c; table[b-1][a-1] = c;
 	}
-	vector<bool> marks(n, false); marks[0] = true;
-	int result = 0x7fffffff;
-	myPermutation(table, marks, 0, n - 1, 0, result);
+	vector<bool> marks(n, false);
+  vector<int> dist(n,INT_MAX);dist[0] = 0;
+	int result = dijkstra(table, marks, dist, n);
 	cout << result << endl;
 	return 0;
 }

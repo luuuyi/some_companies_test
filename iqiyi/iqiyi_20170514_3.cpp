@@ -3,27 +3,21 @@
 
 using namespace std;
 
+//区间dp solver
 long long findMax(vector<int>& nums) {
-	long long ret = 0;
-	while (nums.size() >= 1) {
-		long long tmp = 0;
-		int idx = 0;
-		for (int k = 0; k < nums.size(); k++)
-		{
-			long long result = nums[k] * (k - 1 < 0 ? 1 : nums[k - 1])*(k + 1 >= nums.size() ? 1 : nums[k + 1]);
-			if (result > tmp) {
-				tmp = result;
-				idx = k;
-			}
-			else if (result == tmp&&nums[k] < nums[idx]) {
-				tmp = result;
-				idx = k;
+	int lens = nums.size();
+	if(lens==0)	return 0;
+	nums.insert(nums.begin(),1); nums.insert(nums.end(),1);
+	vector<vector<long long>> dp(lens+2,vector<long long>(lens+2,0));
+	for(int k=1;k<=lens;k++){
+		for(int i=1;i<=lens-k+1;i++){               //attention
+			int j = i+k-1;
+			for(int x=i;x<=j;x++){
+				dp[i][j] = max(dp[i][j], dp[i][x-1] + nums[x]*nums[i-1]*nums[j+1] + dp[x+1][j]);
 			}
 		}
-		ret += tmp;
-		nums.erase(nums.begin() + idx);
 	}
-	return ret;
+	return dp[1][lens];
 }
 
 int main() {

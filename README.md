@@ -15,6 +15,10 @@
 
 ### **好未来2017秋招笔试汇总**
 - [好未来](https://www.nowcoder.com/test/3910507/summary) >> haoweilai
+
+### **CodeM美团点评编程大赛资格赛**
+- [CodeM美团点评编程大赛](http://codem.meituan.com/) >> codeM-qualification
+
 ***
 ## **备注**
 相应的解题思路会放在代码里面作为注释注解

@@ -12,6 +12,7 @@
 - [模拟第一场](https://www.nowcoder.com/test/4236887/summary) >> nowcode_2017_1
 - [模拟第二场](https://www.nowcoder.com/test/4546329/summary) >> nowcode_2017_2
 - [模拟第三场](https://www.nowcoder.com/test/5217106/summary) >> nowcode_2017_3
+- [模拟第四场](https://www.nowcoder.com/test/5507925/summary) >> nowcode_2017_4
 
 ### **好未来2017秋招笔试汇总**
 - [好未来](https://www.nowcoder.com/test/3910507/summary) >> haoweilai

@@ -4,54 +4,31 @@ using namespace std;
 
 int main(){
     int m = 0;
-    while(cin >> m){
-        if(m == 0){
-            cout << -1 << endl;
-            continue;
-        }
-        map<int, vector<int>> status;
-        set<int> unknown;
-        int ret = -1; bool is_continue = true;
-        for(int i=0;i<m;i++){
-            if(is_continue){
-                char action; cin >> action;
-                if(action == '?')   set.insert(i);
-                else if(action == 'I'){
-                    int num = 0; cin >> num;
-                    if(status.find(num) == status.end())    status[num] = vector<int>({1, i});
-                    else{
-                        if(status[num][0]+1 > 1){
-                            for(auto k=unknown.begin(); k!=unknown.end(); k++){
-                                if(*k > status[num][1]){
-                                    unknown.erase(k); status[num][1] = i;
-                                    break; 
-                                }
-                            }
-                            if(status[num][1] == i) continue;
-                            else{
-                                is_continue = false; ret = i+1;
-                            }
-                        }
-                    }
+    //开辟一块空间用来保存每一种类优惠券的状态
+    //第一位表示优惠券的数目，第二位表示优惠券的上次被用掉的时刻
+    vector<vector<int>> coupons(500005, vector<int>(2, 0));
+    set<int> marks;
+    for(int i=1;i<=m;i++){
+        char sign = ' '; cin >> sign;
+        if(sign != '?'){
+            int x = 0; cin >> x;
+            //记录优惠券的操作
+            int opt = sign=='I'?1:-1;
+            coupons[x][0] += opt;
+            if(coupons[x][0]>1 || coupons[x][0]<0){
+                //在marks里面，如果有发现离上一次用掉最早的不确定操作
+                //利用该不确定操作来让所有流程变得合理
+                if(marks.lower_bound(coupons[x][1]) == marks.end()){
+                    cout << i << endl; return 0;
                 }
-                else if(action == 'O'){
-                    int num = 0; cin >> num;
-                    if(status.find(num) == status.end() && unknown.empty()){    is_continue = false; ret = i+1;}
-                    else if(status.find(num) == status.end() && !unknown.empty()){
-                        for(auto k=unknown.begin(); k!=unknown.end(); k++){
-                            if(*k < i){
-                                status[num] = vector<int>({0, i}); unknown.erase(k);
-                                break;
-                            }
-                        }
-                    }
-                }
+                marks.erase(marks.lower_bound(coupons[x][1]));
+                coupons[x][0] = min(max(coupons[x][0], 0), 1);
             }
-            else{
-                string tmp; cin >> tmp;
-            }
+            //更新该种类优惠券的上一次被用掉的时刻
+            coupons[x][1] = i;
         }
-        cout << ret << endl;
+        else    marks.insert(i);
     }
+    cout << -1 << endl;
     return 0;
 }

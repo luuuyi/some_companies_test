@@ -3,7 +3,7 @@
 using namespace std;
 
 int main(){
-    int m = 0;
+    int m = 0; cin >> m;
     //开辟一块空间用来保存每一种类优惠券的状态
     //第一位表示优惠券的数目，第二位表示优惠券的上次被用掉的时刻
     vector<vector<int>> coupons(500005, vector<int>(2, 0));

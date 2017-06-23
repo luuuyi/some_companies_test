@@ -6,10 +6,10 @@ using namespace std;
 long long getDivisor(long long val, long long end){
     if(end == 0 || val == 0)    return 0;
     //将end固定为两者的最小值
-    int end = min(val, end);
+    end = min(val, end);
     long long t = 0, res = 0;
     for(t=1;t<=end && t*t<=val;t++)     res += val/t;
-    for(long long i=val/t;i>=val/end;i--)   ret += (min(end, val/i) - val/(i+1))*i;
+    for(long long i=val/t;i>=val/end;i--)   res += (min(end, val/i) - val/(i+1))*i;
     return res;
 }
 
@@ -28,13 +28,13 @@ int main(){
     cin >> l >> r;
     vector<long long> res(10, 0);
     //根据本题取约数的范围，大概可以固定范围在10的10次方内
+    long long tmp = 1;
     for(int i=0;i<10;i++){
         //每一次迭代求一下每个j开头的约数的数量
-        long long tmp = 1;
         for(int j=1;j<=9;j++){
             //固定每一次的约数取值范围
             long long left = j*tmp, right = (j+1)*tmp-1;
-            res[j] = calcu(l, r, left, right);
+            res[j] += calcu(l, r, left, right);
         }
         tmp *= 10;
     }
